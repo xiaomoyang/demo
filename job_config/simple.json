@@ -1,0 +1,48 @@
+{
+  "name": "simple_job",
+  "start_time": "2021/01/01",
+  "end_time": "2021/02/01",
+  "out": "stdout",
+  "random_alarm_id": true,
+  "random_alarm_num": 100000,
+  "conflict_time_num": 0,
+  "conflict_trouble_num": 0,
+  "troubles": [
+    {
+      "name": "rank1_trouble",
+      "num": 3,
+      "rank": 1,
+      "range_len": 600,
+      "order_seq_num": 2,
+      "dup_alarm_msg": 0,
+      "repeat": 100
+    },
+    {
+      "name": "rank2_trouble",
+      "num": 3,
+      "rank": 2,
+      "range_len": 600,
+      "order_seq_num": 2,
+      "dup_alarm_msg": 0,
+      "repeat": 100
+    },
+    {
+      "name": "rank3_trouble",
+      "num": 3,
+      "rank": 3,
+      "range_len": 600,
+      "order_seq_num": 2,
+      "dup_alarm_msg": 0,
+      "repeat": 1000
+    },
+    {
+      "name": "rank4_trouble",
+      "num": 3,
+      "rank": 10,
+      "range_len": 600,
+      "order_seq_num": 2,
+      "dup_alarm_msg": 0,
+      "repeat": 100
+    }
+  ]
+}
