@@ -2,9 +2,7 @@ import json
 import random
 
 """
-logs:    [{"_cw_host_ip":"10.0.12.52","_cw_message":"error: Could not get shadow information for NOUSER","_cw_raw_time":1630857728000}]
-stats:   {"_cw_host_ip":{"diversityCount":5,"topDistribution":{"10.32.228.54":1,"10.32.228.58":1,"10.32.228.130":1,"10.32.228.145":1,"10.32.226.19":1}}}
-ts:     {"1623727500000":0,"1623727510000":0,"1623727520000":0,"1623727530000":0,"1623727540000":1,"1623727550000":0,"1623727560000":0,"1623727570000":0,"1623727580000":0,"1623727590000":0,"1623727600000":0,"1623727610000":0,"1623727620000":0,"1623727630000":2,"1623727640000":0,"1623727650000":2,"1623727660000":1,"1623727670000":0,"1623727680000":0,"1623727690000":0,"1623727700000":1,"1623727710000":0,"1623727720000":0,"1623727730000":0,"1623727740000":0,"1623727750000":0,"1623727760000":0,"1623727770000":0,"1623727780000":0,"1623727790000":0}
+数据写入clickhouse表名： _cw_distributed_db.docp_log_anomaly_detection_pid
 """
 
 sids = "[1]" # sid配置，和任务配置一致
@@ -50,6 +48,8 @@ def p2_stats_gen1(count):
     portal_count = count - gateway_count
 
     data = {"src": {"diversityCount": 2, "topDistribution": {"gateway": gateway_count, "portal": portal_count}}}
+    if portal_count > gateway_count:
+        portal_count, gateway_count = gateway_count, portal_count
     return json.dumps(data)
 
 def p2_message_gen2(begin_time, end_time):
@@ -123,6 +123,9 @@ def p3_stats_gen2(count):
     if domm_count < 1:
         domm_count = 1
         trace_count = count - dola_count - domm_count
+
+    if domm_count > dola_count:
+        domm_count, dola_count = dola_count, domm_count
 
     data = {"src": {"diversityCount": 2, "topDistribution": {"dola": dola_count, "domm": domm_count}}}
     return json.dumps(data)
@@ -321,7 +324,7 @@ def generate(config):
                 config["trend_granularity"], logs, config["source_ids"],
                 config["pattern_id"]
             ]
-            msg = ",".join(str(x).replace(",", "\,") for x in items)
+            msg = "\t".join(str(x) for x in items)
             # msg = json.dumps(items, ensure_ascii=False)
             yield msg
 
